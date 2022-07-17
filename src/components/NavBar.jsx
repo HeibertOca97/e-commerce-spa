@@ -5,6 +5,7 @@ import styled from "styled-components";
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import MenuIcon from '@material-ui/icons/Menu';
+import logotype from '../assets/shop_512.png';
 //import FavoriteIcon from '@material-ui/icons/Favorite';
 
 const Header = styled.header`
@@ -79,7 +80,7 @@ export function NavBar(){
           <HeaderSection px="30">
             <LinkPicture to="/">
               <ImgLogo 
-                src={require('../shop_512.png')} 
+                src={logotype} 
                 alt="ShopOnline" 
               />
             </LinkPicture>

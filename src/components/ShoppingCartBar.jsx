@@ -1,17 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { addProduct } from '../features/carts/cartSlice'
 import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 
 export function ShoppingCartBar({ handleShoppingCartBarStatus, shoppingCartBarStatus }){ 
-  const [productShoppingCart, setProductShoppingCart] = useState([]);
-  
+  const cart = useSelector(state => state.cart);
+  const dispatch = useDispatch();
+
+
   useEffect(() =>{
     const getAllProducts = [
       {
         image: "https://th.bing.com/th/id/OIP.EsJChnN3f21BkOlBtYlXVQHaHa?pid=ImgDet&rs=1",
         title: "HELD CHAQUETA HAKUNA GRIS",
-        price: 360.00
+        price: 200.00
       },
       {
         image: "https://th.bing.com/th/id/OIP.EsJChnN3f21BkOlBtYlXVQHaHa?pid=ImgDet&rs=1",
@@ -19,7 +23,13 @@ export function ShoppingCartBar({ handleShoppingCartBarStatus, shoppingCartBarSt
         price: 360.00
       },
     ];
-    setProductShoppingCart(getAllProducts);
+    for(let product of getAllProducts){
+      dispatch(addProduct({
+        product: product,
+        price: product.price,
+        quantity: 1
+      }));  
+    }
   }, [])
 
   return (
@@ -45,14 +55,14 @@ export function ShoppingCartBar({ handleShoppingCartBarStatus, shoppingCartBarSt
           padding: '10px'
         }}
       >
-        <p>Mi carrito <span>{productShoppingCart.length}</span></p> <CloseIcon cursor="pointer" onClick={handleShoppingCartBarStatus}/> 
+        <p>Mi carrito <span>{cart.quantity} (${cart.total})</span></p> <CloseIcon cursor="pointer" onClick={handleShoppingCartBarStatus}/> 
       </div>
       <div style={{
         overflow: 'auto',
         padding: '8px'
       }}>
         {
-          productShoppingCart.map((product, index) => (
+          cart.products.map((product, index) => (
             <div 
               style={{
                 display: 'grid',
