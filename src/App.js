@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
-import {NavBar} from './components/NavBar';
 import {
     Routes,
     Route
 } from 'react-router-dom';
 import './App.css';
 import Home from './pages/Home';
+import Login from './pages/Login';
+import NotFound from './pages/NotFound.jsx';
 
 function App() {
     const APP_NAME = "ShopOnline";
@@ -16,10 +17,11 @@ function App() {
 
     return (
         <>
-            <NavBar />
 
             <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="*" element={<NotFound />} />
             </Routes>     
         </>
     );

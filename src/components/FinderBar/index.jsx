@@ -1,43 +1,5 @@
 import {useState} from 'react';
-import styled from "styled-components";
-import SearchIcon from '@material-ui/icons/Search';
-import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
-
-const containerStyle = `
-  width: 95%;
-  margin: 10px auto;
-  border-radius: 20px;
-  border: 1px solid #ccc;
-  display: grid;
-  grid-template-columns: 150px 1fr;
-  &>div{
-    display: flex;
-    align-items: center;
-  }
-`;
-
-const inputStyle = `
-  padding: 15px 10px;
-  border: none;
-  display: block;
-  width: 100%;
-  outline: none;
-  background-color: #fff;
-  border-radius: 20px;
-`;
-
-const iconStyle = {
-  display: "inline-block",
-  color: "#101214", 
-  height: "25px",
-  width: "35px",
-  marginLeft: "5px",
-  };
-
-const Container = styled.div`${containerStyle}`;
-const Input = styled.input`${inputStyle}`;
-const Select = styled.select`${inputStyle}`;
-
+import { Container, Input, Select, SearchStyleIcon } from './styled'
 
 export function FinderBar() {
   const [selectOption, setSelectOption] = useState('');
@@ -45,7 +7,6 @@ export function FinderBar() {
 
   const validateSearchResults = (category, value) => {
     if(value.length > 1) console.log(`Find some result for "${value}"... by "${category}"`);
-    console.log("complete");
   }
 
   const handleClickAndSendSearchResult = () => {
@@ -58,9 +19,7 @@ export function FinderBar() {
 
   return (
     <Container>
-      { console.log(selectOption) }
       <div>
-        <FormatListBulletedIcon style={iconStyle} />
         <Select 
           name="category" 
           onChange={(ev) => setSelectOption(ev.target.value)}
@@ -72,7 +31,7 @@ export function FinderBar() {
         </Select>
       </div>
       <div>
-        <SearchIcon cursor="pointer" style={iconStyle} onClick={handleClickAndSendSearchResult}/>
+        <SearchStyleIcon cursor="pointer" onClick={handleClickAndSendSearchResult}/>
         <Input 
           type="text" 
           name="searchProduct"
