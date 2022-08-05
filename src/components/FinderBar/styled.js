@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import SearchIcon from '@material-ui/icons/Search';
+import { MdOutlineSearch } from 'react-icons/md'
 
 const iconStyle = `
   display: inline-block;
@@ -36,7 +36,7 @@ const inputStyle = `
 const Container = styled.div`${containerStyle}`;
 const Input = styled.input`${inputStyle}`;
 const Select = styled.select`${inputStyle}`;
-const SearchStyleIcon = styled(SearchIcon)`${iconStyle}`;
+const SearchStyleIcon = styled(MdOutlineSearch)`${iconStyle}`;
 
 
 export {

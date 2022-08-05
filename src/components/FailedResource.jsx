@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import SyncProblemOutlinedIcon from '@material-ui/icons/SyncProblemOutlined';
+import { MdSyncProblem } from 'react-icons/md'
+
 
 const Container = styled.div`
   text-align: center;
@@ -14,7 +15,7 @@ const Container = styled.div`
   }
 `;
 
-const ProblemIcon = styled(SyncProblemOutlinedIcon)` 
+const ProblemIcon = styled(MdSyncProblem)` 
   margin: 0 0 20px 0;
   font-size: 75px !important;
 `;

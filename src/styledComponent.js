@@ -12,7 +12,14 @@ const ContainerStyled = styled.div`
             flex-wrap: wrap;
             align-item: center;
             justify-content: space-around;
-        `;
+            `;
+        }else if(props.flex === 'card'){
+            return `
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            align-items: left;
+            `;
         }
     }}
 

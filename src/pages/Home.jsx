@@ -1,13 +1,13 @@
 import {NavBar} from '../components/NavBar';
 import { FinderBar } from '../components/FinderBar';
-import Product from '../features/products/Product'
+import {ProductCard} from '../features/components/ProductCard/ProductCard'
 
 function Home(){ 
 
     return (<>
         <NavBar/>
         <FinderBar />
-        <Product />
+        <ProductCard />
     </>);
 }
 

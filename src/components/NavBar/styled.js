@@ -1,9 +1,7 @@
 import {Link} from 'react-router-dom';
 import styled from "styled-components";
-import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
-import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
-import MenuIcon from '@material-ui/icons/Menu';
-
+import { AiOutlineUser } from 'react-icons/ai';
+import {MdOutlineShoppingBasket} from 'react-icons/md'
 
 const Buttons = `
     display: block;
@@ -12,13 +10,8 @@ const Buttons = `
     margin: 0 5px 0 5px;
 `;
 
-const buttonStyled = ` 
-    ${Buttons}
-    font-size: 35px !important;
-    transition: all 350ms linear;
-    &:hover{
-      color: #FFF441;
-    } 
+const IconStyled = ` 
+    font-size: 35px !important; 
   `;
 
 const imageStyled = `
@@ -29,9 +22,8 @@ const imageStyled = `
   `;
 
 // Icons
-const ShoppingBasketIconStyled = styled(ShoppingBasketIcon)`${buttonStyled}`;
-const PersonOutlineIconStyled = styled(PersonOutlineIcon)`${buttonStyled}`;
-const MenuIconStyled = styled(MenuIcon)`${buttonStyled}`;
+const ShoppingBasketIconStyled = styled(MdOutlineShoppingBasket)`${IconStyled}`;
+const PersonOutlineIconStyled = styled(AiOutlineUser)`${IconStyled}`;
 
 // Component
 const PictureLink = styled(Link)`${imageStyled}`
@@ -53,13 +45,40 @@ const Image = styled.img`
     height: 100%;
     display: block;
   `;
+const ButtonIcon = styled.div`
+    position: relative;
+    margin: 0px 5px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: all 350ms linear;
+
+    &:hover{
+      color: #FFF441;
+
+      span{
+        color: #000;
+      }
+    }
+
+    & > span {
+        position: absolute;
+        top: 0;
+        right: -10px;
+        background-color: #FFDC27;
+        font-weight: 800;
+        padding: 2px 8px;
+        border-radius: 50%; 
+        font-size: .9rem;
+        color: #000;
+    }
+`;
 
 export {
     ShoppingBasketIconStyled,
     PersonOutlineIconStyled,
-    MenuIconStyled,
     PictureLink,
     Header,
     HeaderSection,
     Image,
+    ButtonIcon,
 }

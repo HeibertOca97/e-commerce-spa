@@ -6,6 +6,7 @@ import {
 import './App.css';
 import Home from './pages/Home';
 import Login from './pages/Login';
+import View from './pages/View';
 import NotFound from './pages/NotFound.jsx';
 
 function App() {
@@ -13,17 +14,16 @@ function App() {
 
     useEffect(() => {
         document.querySelector("title").innerText = `${APP_NAME}`;
+        console.log('useEffect App');
     }, []);
 
     return (
-        <>
-
             <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/view/detail=:id" element={<View />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>     
-        </>
     );
 }
 
