@@ -1,12 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
-    products
+    createModel,
+    updateModel,
+    getModel,
+    deleteModel,    
 } from '../../faker';
+import { newProducts } from '../../faker/api.products'
+
+const modelName = "products";
+createModel(modelName, newProducts);
 
 const productSlice = createSlice({
-    name: 'products',
+    name: modelName,
     initialState: {
-        products,
+        products: getModel(modelName) || [],
         status: true,
         filters: []
     },

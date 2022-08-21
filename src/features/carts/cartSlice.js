@@ -1,9 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { carts as initialState, updateDataOfLocalStorage } from '../../faker';
+import { 
+    createModel,
+    updateModel,
+    getModel,
+    deleteModel,
+} from '../../faker';
+
+const modelName = "carts";
+
+createModel(modelName, {
+    carts: [],
+    quantity: 0,
+    total: 0,
+});
 
 const cartSlice = createSlice({
     name: 'cart',
-    initialState,
+    initialState: getModel(modelName) || {},
     reducers: {
         addProduct: (state, {payload}) => {
             let getFind = state.carts.find(item => item.id === payload.id);
@@ -21,7 +34,7 @@ const cartSlice = createSlice({
                 state.quantity += payload.quantity;
                 state.total += payload.price;
             }
-            updateDataOfLocalStorage('carts', state);
+            updateModel(modelName, state);
         },
 
     }

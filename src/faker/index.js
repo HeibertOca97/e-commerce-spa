@@ -1,46 +1,31 @@
-import { newProducts } from './api.products';
-//import { cart } from './api.cart';
-
-function createAndGetDataOfLocalStorage(modelName, model) {
-    const modelString = JSON.stringify(model);
-    let modelJson = [];
-    if(!window.localStorage.getItem(modelName)){
-        window.localStorage.setItem(modelName, modelString)
-    }
-
+function deleteModel(modelName){
     if(window.localStorage.getItem(modelName)){
-        const storage = window.localStorage.getItem(modelName);
-        modelJson = JSON.parse(storage);
-        return modelJson;
+        window.localStorage.removeItem(modelName);
     }
-
-    return modelJson;
 }
 
-function updateDataOfLocalStorage(modelName, data) {
-    const dataString = JSON.stringify(data);
-
+function updateModel(modelName, data){
     if(window.localStorage.getItem(modelName)){
-        window.localStorage.setItem(modelName, dataString);
+        window.localStorage.setItem(modelName, JSON.stringify(data));
+    }
+}
+
+function createModel(modelName, data){
+    if(!window.localStorage.getItem(modelName)){
+        window.localStorage.setItem(modelName, JSON.stringify(data))
     }
 }
 
 function getModel(modelName){
     if(window.localStorage.getItem(modelName)){
-        return window.localStorage.getItem(modelName)
+        return JSON.parse(window.localStorage.getItem(modelName))
     }
-};
-
-const products = createAndGetDataOfLocalStorage('products', newProducts);
-const carts = createAndGetDataOfLocalStorage('carts', {
-    carts: [],
-    quantity: 0,
-    total: 0,
-});
+    return null;
+}
 
 export {
-    products,
-    carts,
-    updateDataOfLocalStorage,
     getModel,
+    createModel,
+    updateModel,
+    deleteModel,
 }

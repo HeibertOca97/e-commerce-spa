@@ -3,45 +3,63 @@ import { useEffect, useState, useCallback } from 'react';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux';
-import { login } from '../features/auth/authSlice';
+import { register } from '../features/auth/authSlice';
 
-function Login(){
+function Register(){
     const users = useSelector(state => state.users);
     const dispatch = useDispatch();
     const [success, setSuccess] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
+    const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
     
     useEffect(() => { 
-       console.log('render Login') 
+       console.log('render register') 
         const token = Cookies.get('token');
         token && navigate('/');
+        
     }, [success, errorMessage]);
     
     const validateInput = useCallback((ev) => {
+        ev.target.name === 'fullname' && setFullName(ev.target.value);
         ev.target.name === 'email' && setEmail(ev.target.value);
         ev.target.name === 'password' && setPassword(ev.target.value);
-    }, [email, password])
+    }, [fullName, email, password])
 
-    const sendCredentials = async (ev) => {
+    const sendRegister = async (ev) => {
         ev.preventDefault();
         // Test local
-        if(!email || !password) return setErrorMessage('email and password are required'); 
-        if(!users.data.find(data => data.email === email) || !users.data.find(data => data.password === password)) return setErrorMessage("Credentials incorrect!");
-            
-        dispatch(login({ email, password }))
+        if(!fullName || !email || !password) return setErrorMessage('All Inputs are required!'); 
+        if(users.data.find(data => data.email === email)) return setErrorMessage("There is already an account registered with your email address");
+
+        dispatch(register({ fullName, email, password }))
+
+        setFullName('');
         setEmail('');
-        setPassword('');
+        setPassword('');     
         setSuccess(true);
         setErrorMessage('');
+        //if(!success) return setErrorMessage(auth.message);
+
+
     }
 
     return (
         <>
             <NavBar />
-            <form onSubmit={sendCredentials}>
+            <form onSubmit={sendRegister}>
+                <div>
+                    <input 
+                        type="text" 
+                        onChange={validateInput} 
+                        value={fullName} 
+                        name="fullname" 
+                        autoComplete="off" 
+                        placeholder="Full name"
+                    />
+                </div>
                 <div>
                     <input 
                         type="email" 
@@ -62,7 +80,7 @@ function Login(){
                         placeholder="Password"
                     />
                 </div>
-                <button>Signin</button>
+                <button>Register</button>
                 {
                     !success && <p>{errorMessage}</p>
                 }
@@ -72,4 +90,4 @@ function Login(){
     );
 }
 
-export default Login;
+export default Register;

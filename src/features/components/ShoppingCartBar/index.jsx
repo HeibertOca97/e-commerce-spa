@@ -14,13 +14,13 @@ export function ShoppingCartBar({ handleShoppingCartBarStatus, shoppingCartBarSt
 
   useEffect(() =>{ 
     setHeightForHeaderCart();
-    console.log('useEffect 1')
+    console.log('useEffect 1 Header ShoppingCartBar')
   }, [])
 
   useEffect(() => {
     let value = shoppingCartBarStatus ? 'hidden' : 'auto';
     document.body.style.overflow = value;
-    console.log('useEffect 2')
+    console.log('useEffect 2 ShoppingCartBar')
   }, [shoppingCartBarStatus])
 
 
