@@ -1,4 +1,16 @@
-import styled from 'styled-components'
+import styled, { createGlobalStyle } from 'styled-components'
+
+const GlobalStyle = createGlobalStyle`
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body{
+        font-size: 1.1em;
+    }
+`;
 
 const ContainerStyled = styled.div`
     padding: 10px 5px;
@@ -35,7 +47,10 @@ const ModalStyled = styled.div`
     background-color: ${(props) => props.status ? 'rgba(0,0,0,.6)' : 'transparent'}; 
     transition: all 250ms ease-in; 
 `;
+
+
 export {
+    GlobalStyle,
     ContainerStyled,
     ModalStyled,
 }

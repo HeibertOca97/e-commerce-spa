@@ -3,13 +3,6 @@ import styled from "styled-components";
 import { AiOutlineUser } from 'react-icons/ai';
 import {MdOutlineShoppingBasket} from 'react-icons/md'
 
-const Buttons = `
-    display: block;
-    cursor: pointer;
-    border-radius: 10px;
-    margin: 0 5px 0 5px;
-`;
-
 const IconStyled = ` 
     font-size: 35px !important; 
   `;

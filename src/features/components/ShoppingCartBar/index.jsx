@@ -1,36 +1,50 @@
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { useEffect, useState, useContext } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { removeProductFromCart } from '../../carts/cartSlice';
 import { ModalStyled } from '../../../styledComponent';
-import { ContainerBar, CardHeader, CardBody, CardItem, CardAction, CloseIconStyled, DeleteIconStyled } from './styled'
+import { ContainerBar, CardHeader, CardBody, CardItem, CardAction, CloseIconStyled, DeleteIconStyled, ButtonGoCart } from './styled';
+import { AppContext } from '../../../app/modalState';
 
-export function ShoppingCartBar({ handleShoppingCartBarStatus, shoppingCartBarStatus }){ 
+const URL_PATH = "/e-commerce-spa";
+
+export function ShoppingCartBar(){ 
   const cart = useSelector(state => state.cart);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [state, setState] = useContext(AppContext);
+
   const [headerHeight, setHeaderHeight] = useState(0);
 
-  const setHeightForHeaderCart = () => {
-    const height = document.querySelector("body header").clientHeight;
-    setHeaderHeight(height);
-  }
-
   useEffect(() =>{ 
+    const setHeightForHeaderCart = () => {
+      const height = document.querySelector("body header").clientHeight;
+      setHeaderHeight(height);
+    }
     setHeightForHeaderCart();
-    console.log('useEffect 1 Header ShoppingCartBar')
-  }, [])
+  }, []);
 
   useEffect(() => {
-    let value = shoppingCartBarStatus ? 'hidden' : 'auto';
+    let value = state.shoppingCart ? 'hidden' : 'auto';
     document.body.style.overflow = value;
-    console.log('useEffect 2 ShoppingCartBar')
-  }, [shoppingCartBarStatus])
+  }, [state.shoppingCart]);
 
 
+  const removeProduct = (id) => {
+    dispatch(removeProductFromCart({ id }));
+  }
+
+  const redirect = () => {
+    setState({shoppingCart: !state.shoppingCart});
+    navigate(`${URL_PATH}/check-cart`);
+  }
 
   return (
     <>
-      <ModalStyled zindex={shoppingCartBarStatus && 50} status={shoppingCartBarStatus}/>
-      <ContainerBar zindex={60} status={shoppingCartBarStatus}> 
+      <ModalStyled zindex={state.shoppingCart && 50} status={state.shoppingCart}/>
+      <ContainerBar zindex={60} status={state.shoppingCart}> 
         <CardHeader height={headerHeight}>
-          <p>Item in your cart <span>({cart.quantity})</span></p> <CloseIconStyled cursor="pointer" onClick={handleShoppingCartBarStatus}/> 
+          <p>Item in your cart <span>({cart.quantity})</span></p> <CloseIconStyled cursor="pointer" onClick={() => setState({ shoppingCart: !state.shoppingCart })}/> 
         </CardHeader>
         <CardBody>
           {
@@ -45,7 +59,7 @@ export function ShoppingCartBar({ handleShoppingCartBarStatus, shoppingCartBarSt
                     <h4>{ product.title }</h4>
                     <p><strong>${ product.price } x {product.quantity} = ${product.price * product.quantity}</strong></p>
                   </div>
-                  <DeleteIconStyled cursor="pointer" />
+                  <DeleteIconStyled cursor="pointer" onClick={ () => removeProduct(product.id) } />
                 </div>
               </CardItem>
             ))
@@ -53,8 +67,8 @@ export function ShoppingCartBar({ handleShoppingCartBarStatus, shoppingCartBarSt
         </CardBody>
 
         <CardAction>
-          <button>Go checking</button>
-          <p>Total ${cart.total}</p>
+          <ButtonGoCart onClick={redirect}>Go checking</ButtonGoCart>
+          <p>Total ${cart.total.toFixed(2)}</p>
         </CardAction> 
       </ContainerBar>
     </>

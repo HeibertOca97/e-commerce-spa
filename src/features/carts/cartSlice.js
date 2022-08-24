@@ -3,7 +3,6 @@ import {
     createModel,
     updateModel,
     getModel,
-    deleteModel,
 } from '../../faker';
 
 const modelName = "carts";
@@ -12,34 +11,41 @@ createModel(modelName, {
     carts: [],
     quantity: 0,
     total: 0,
+    getFinded:{},
 });
 
 const cartSlice = createSlice({
     name: 'cart',
     initialState: getModel(modelName) || {},
     reducers: {
-        addProduct: (state, {payload}) => {
-            let getFind = state.carts.find(item => item.id === payload.id);
-            if(getFind){
-                getFind.quantity += payload.quantity;
-                const getFilter = state.carts.filter(item => item.id !== payload.id); 
+        addProductToCart: (state, {payload}) => {
+            let getWantedData = state.carts.find(item => item.id === payload.id);
 
-                state.carts = [getFind, ...getFilter];
-                const qty = state.carts.reduce((acc, el) => acc.concat(el.quantity),[]).reduce((acc, el) => acc + el,0);
-                const total = state.carts.reduce((acc, el) => acc.concat(el.price + el.price),[]).reduce((acc, el) => acc + el,0);
-                state.quantity = qty;
-                state.total = total;
+            if(getWantedData){
+                state.quantity += payload.quantity;
+                state.total += parseFloat((payload.quantity * payload.price).toFixed(2));
+                getWantedData.quantity += payload.quantity;
+                let getNewDataFilters = state.carts.filter(item => item.id !== payload.id); 
+                state.carts = [...getNewDataFilters, getWantedData];
             }else{
                 state.carts.push(payload);
                 state.quantity += payload.quantity;
-                state.total += payload.price;
+                state.total += parseFloat((payload.quantity * payload.price).toFixed(2));
             }
             updateModel(modelName, state);
         },
+        removeProductFromCart: (state, { payload }) => {
+            let getWantedData = state.carts.find(item => item.id === payload.id);
+            state.quantity -= getWantedData.quantity;
+            state.total -= parseFloat((getWantedData.quantity * getWantedData.price).toFixed(2));
+            let getNewDataFilters = state.carts.filter(item => item.id !== payload.id);
+            state.carts = [...getNewDataFilters];
 
+            updateModel(modelName, state);
+        }
     }
 });
 
 
-export const { addProduct } = cartSlice.actions;
+export const { addProductToCart, removeProductFromCart } = cartSlice.actions;
 export default cartSlice.reducer;

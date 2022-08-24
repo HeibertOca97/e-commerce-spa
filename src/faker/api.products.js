@@ -28,6 +28,33 @@ const products = [
         color: ["darkblue", "gray", "black"],
         price: 200.00,
     },
+    {
+        title: "Men's crew sailing jackect",
+        description: "<p>Adipisicing hic aperiam maiores eum magni.</p><p>Quasi labore tenetur voluptatum laboriosam impedit!</p><p>Adipisicing minus ratione illum id amet Blanditiis repudiandae facilis error eos obcaecati voluptatibus molestiae sit? Expedita iste impedit?</p>",
+        image: "https://www.hellyhansen.com/media/catalog/product/3/0/30263_990-2-main3.jpg?quality=90&bg-color=255,255,255&fit=bounds&height=560&width=700&canvas=700:560",
+        categories: ["gentlemen"],
+        size: ["S - EU 36", "M - EU 38", "XL - 42"],
+        color: ["gray", "black"],
+        price: 150.00,
+    },
+    {
+        title: "Plaid Shirt",
+        description: "<p>Adipisicing hic aperiam maiores eum magni.</p><p>Quasi labore tenetur voluptatum laboriosam impedit!</p><p>Adipisicing minus ratione illum id amet Blanditiis repudiandae facilis error eos obcaecati voluptatibus molestiae sit? Expedita iste impedit?</p>",
+        image: "https://www.kindpng.com/picc/m/198-1983979_check-shirt-free-desktop-background-lyle-and-scott.png",
+        categories: ["gentlemen"],
+        size: ["S - EU 36", "M - EU 38", "XL - 42"],
+        color: ["blue", "red", "green"],
+        price: 50.00,
+    },
+    {
+        title: "Polo Shirt",
+        description: "<p>Adipisicing hic aperiam maiores eum magni.</p><p>Quasi labore tenetur voluptatum laboriosam impedit!</p><p>Adipisicing minus ratione illum id amet Blanditiis repudiandae facilis error eos obcaecati voluptatibus molestiae sit? Expedita iste impedit?</p>",
+        image: "https://i.pinimg.com/originals/a8/6c/8b/a86c8bfe4c4bbcd902543063c9af0d63.jpg",
+        categories: ["ladies"],
+        size: ["S - EU 36", "M - EU 38", "XL - 42"],
+        color: ["pink", "white", "black"],
+        price: 45.00,
+    },
 ];
 
 

@@ -63,7 +63,11 @@ const CardItem = styled.div`
         }
         p{
             color: #aaa;
+            margin: 5px;
         }
+    }
+    &:nth-last-child(1){
+        margin-bottom: 107px;
     }
 `;
 
@@ -73,18 +77,58 @@ const CardAction = styled.div`
     bottom: 0;
     width: 100%;
     background-color: #1B366A;
+
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    line-height: 2.2em;
+    padding: 0 10px 0 0;
+
+    //button{
+        //text-transform: uppercase;
+        //font-weight: bold;
+        //cursor: pointer;
+        //border: none;
+        //color: #fff;
+        //background-color: #011F5D;
+        //transition: all 250ms linear;
+        //&:hover{
+            //background-color: #fff;
+            //color: #000;
+        //}
+    //}
+    p{
+        text-transform: uppercase;
+        color: #fff;
+        font-weight: bold;
+        text-align: right;
+    }
 `;
+
+const ButtonGoCart = styled.button`
+    text-transform: uppercase;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    color: #fff;
+    background-color: #011F5D;
+    transition: all 250ms linear;
+    &:hover{
+        background-color: #fff;
+        color: #000;
+    }
+`; 
 
 const iconStyle = `
     color: #fff;
 `;
+
 const iconStyle2 = `
     color: #000;
     font-size: 2.5rem;
     padding: 10px;
     margin: 5px;
     border-radius: 50%;
-    box-shadow: 0px 2px 10px #ccc;
+box-shadow: 0px 2px 10px #ccc;
 `;
 
 const CloseIconStyled = styled(IoMdClose)`${iconStyle}`;
@@ -98,4 +142,5 @@ export {
     CardAction,
     CloseIconStyled,
     DeleteIconStyled,
+    ButtonGoCart
 }

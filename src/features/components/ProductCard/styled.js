@@ -73,7 +73,7 @@ const Card = styled.div`
 `;
 
 const iconStyle = `
-    font-size: 2.8em;
+    font-size: 3.5em;
     color: #131416;
     box-shadow: 0px 2px 10px #bbb;
     background-color: #fff;

@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useContext} from 'react';
 import { useSelector } from 'react-redux';
 import logotype from '../../assets/shop_512.png';
 import { 
@@ -12,21 +12,20 @@ import {
 } from './styled';
 import { ContainerStyled } from '../../styledComponent';
 import {ShoppingCartBar} from '../../features/components/ShoppingCartBar/index';
+import { AppContext } from '../../app/modalState';
+
+const URL_PATH = "/e-commerce-spa";
 
 export function NavBar(){
   const cart = useSelector(state => state.cart);
-  const [shoppingCartBarStatus, setShoppingCartBarStatus] = useState(false);
-
-  const handleShoppingCartBarStatus = () => {
-    setShoppingCartBarStatus(prevShoppingCartBarStatus => !prevShoppingCartBarStatus);
-  };
-
+  const [state, setState] = useContext(AppContext);
+  
   return(
     <>
       <Header primary={false}> 
         <ContainerStyled flex="header">
           <HeaderSection px="30">
-            <PictureLink to="/">
+            <PictureLink to={`${URL_PATH}`}>
               <Image 
                 src={logotype} 
                 alt="ShopOnline" 
@@ -34,11 +33,9 @@ export function NavBar(){
             </PictureLink>
           </HeaderSection>
           <HeaderSection direction="right">
-            <ButtonIcon>
+            <ButtonIcon onClick={() => setState({ shoppingCart:  !state.shoppingCart})}>
               { cart.quantity > 0 && <span>{cart.quantity}</span>}
-              <ShoppingBasketIconStyled
-                onClick={handleShoppingCartBarStatus} 
-              />
+              <ShoppingBasketIconStyled/>
             </ButtonIcon>
             <ButtonIcon>
               <PersonOutlineIconStyled/>
@@ -48,7 +45,7 @@ export function NavBar(){
         </ContainerStyled>
       </Header>
 
-      <ShoppingCartBar handleShoppingCartBarStatus={handleShoppingCartBarStatus} shoppingCartBarStatus={shoppingCartBarStatus}/>
+      <ShoppingCartBar />
 
     </>
   );

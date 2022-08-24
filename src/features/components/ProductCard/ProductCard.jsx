@@ -1,31 +1,30 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
-
-import { FailedResource } from '../../../components/FailedResource'
+import { filterProduct } from '../../../features/products/productSlice'
 import { NoResource } from '../../../components/NoResource'
 import { ContainerStyled } from '../../../styledComponent';
-import { Card, SearchIconStyled } from './styled'
+import { Card, SearchIconStyled } from './styled';
 
 export function ProductCard(){
     const { products, status, filters } = useSelector(state => state.products);
     const [success, setSuccess] = useState(false);
-    const [error, setError] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     useEffect(() => { 
         setSuccess(status);
-    },[]);
+        dispatch(filterProduct({
+            category: "",
+            name: ""
+        })); 
+    }, [status, dispatch]);
 
     const goPageDetail = (id) => {
         navigate(`view/detail=${id}`);
     }
 
     const layoutProduct = () => {
-        if(error){
-            return <FailedResource message={errorMessage} />
-        }
         if (!success){
             return <NoResource message="Resource not found"></NoResource>
         }
@@ -33,7 +32,7 @@ export function ProductCard(){
         return filters.length < 1 ? products.map((product, index) => (
             <Card key={index}>
                 <picture>
-                    <img src={product.image} title={product.title} alt="Couldn't not load image" />
+                    <img src={product.image} title={product.title} alt={`Couldn't not load image - ${product.title}`} />
                 </picture>
                 <div className="product__card-body">
                     <h3 className="product__card-title">{product.title}</h3>

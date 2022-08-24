@@ -1,4 +1,3 @@
-import {NavBar} from '../components/NavBar';
 import { useEffect, useState, useCallback } from 'react';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom'
@@ -48,7 +47,6 @@ function Register(){
 
     return (
         <>
-            <NavBar />
             <form onSubmit={sendRegister}>
                 <div>
                     <input 

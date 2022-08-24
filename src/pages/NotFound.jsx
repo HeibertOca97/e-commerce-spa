@@ -1,4 +1,3 @@
-import {NavBar} from '../components/NavBar';
 import { ContainerStyled } from '../styledComponent.js'
 import styled from 'styled-components';
 
@@ -10,14 +9,13 @@ const Image = styled.img`
     margin: 15px auto;
 `;
 
-function NoFound(){ 
+function NotFound(){ 
 
     return (<>
-        <NavBar/>
         <ContainerStyled>
             <Image src={image} width="700px" alt="Couldn't load image" />
         </ContainerStyled>
     </>);
 }
 
-export default NoFound;
+export default NotFound;

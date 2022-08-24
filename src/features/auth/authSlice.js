@@ -4,7 +4,6 @@ import {
     createModel,
     updateModel,
     getModel, 
-    deleteModel,
 } from '../../faker';
 import Cookies from 'js-cookie';
 

@@ -1,60 +1,59 @@
-import {useState} from 'react';
+import {useState } from 'react';
 import { Container, Input, Select, SearchStyleIcon } from './styled'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { filterProduct } from '../../features/products/productSlice'
 
 export function FinderBar() {
   const [selectOption, setSelectOption] = useState('');
-  const [search, setSearch] = useState('');
+  const [inputSearch, setInputSearch] = useState('');
+  const [message, setMessage] = useState('');
   const dispatch = useDispatch();
+  const { filters } = useSelector(state => state.products);
 
   const validateSearchResults = (category, value) => {
-    if(value.length > 1) console.log(`Find some result for "${value}"... by "${category}"`);
+    if(value.length > 1){
+      setMessage(`Find some result for "${value}"... by "${!category ? "All" : category}"`);
+
+    } 
   }
 
-  const handleClickAndSendSearchResult = () => {
+  const handleSearchProduct = () => {
+    validateSearchResults(selectOption, inputSearch);
     dispatch(filterProduct({
       category: selectOption,
-      title: search
+      name: inputSearch
     }));
-    validateSearchResults(selectOption, search);
-  } 
-
-  const getSearchResults = () => {
-    dispatch(filterProduct({
-      category: selectOption,
-      title: search
-    }));
-    validateSearchResults(selectOption, search);
   }
 
   return (
+    <>
     <Container>
       <div>
         <Select 
           name="category" 
-          onChange={(ev) => dispatch(filterProduct({category: ev.target.value}))}
           onFocus={(ev) => setSelectOption(ev.target.value)}
+          onChange={(ev) => setSelectOption(ev.target.value)}
           autoFocus={true}
         >
-          <option value="">Select a category...</option>
+          <option value="">All</option>
           <option value="unisex">Unisex</option>
           <option value="ladies">Ladies</option>
           <option value="gentlemen">Gentlemen</option>
         </Select>
       </div>
       <div>
-        <SearchStyleIcon cursor="pointer" onClick={handleClickAndSendSearchResult}/>
+        <SearchStyleIcon cursor="pointer" onClick={handleSearchProduct}/>
         <Input 
           type="text" 
           name="searchProduct"
-          value={search} 
-          onChange={(ev) => setSearch(ev.target.value)}
-          onKeyUp={getSearchResults}
+          value={inputSearch} 
+          onChange={(ev) => setInputSearch(ev.target.value)}
           placeholder="Search for your product here.."
           autoComplete="off"
         />
       </div>
     </Container>
+      { message && filters.length > 0 ? <p>{message} | <strong>{filters.length}</strong></p> : "" }
+    </>
   );
 }
