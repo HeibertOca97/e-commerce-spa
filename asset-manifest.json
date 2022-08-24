@@ -1,14 +1,11 @@
 {
   "files": {
-    "main.css": "/e-commerce-spa/static/css/main.bea00d17.css",
-    "main.js": "/e-commerce-spa/static/js/main.c3923b31.js",
+    "main.js": "/e-commerce-spa/static/js/main.dd8f58de.js",
     "static/media/shop_512.png": "/e-commerce-spa/static/media/shop_512.8593b9e4a8da65a27b73.png",
     "index.html": "/e-commerce-spa/index.html",
-    "main.bea00d17.css.map": "/e-commerce-spa/static/css/main.bea00d17.css.map",
-    "main.c3923b31.js.map": "/e-commerce-spa/static/js/main.c3923b31.js.map"
+    "main.dd8f58de.js.map": "/e-commerce-spa/static/js/main.dd8f58de.js.map"
   },
   "entrypoints": [
-    "static/css/main.bea00d17.css",
-    "static/js/main.c3923b31.js"
+    "static/js/main.dd8f58de.js"
   ]
 }
