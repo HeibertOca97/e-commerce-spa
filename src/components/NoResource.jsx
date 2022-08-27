@@ -5,7 +5,7 @@ const Container = styled.div`
   text-align: center;
   width: 95%;
   margin: 15px auto;
-  color: #FFC120; 
+  color: #1b366a; 
   padding: 20px 0;
   
   & > p {

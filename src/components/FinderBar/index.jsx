@@ -1,59 +1,70 @@
-import {useState } from 'react';
-import { Container, Input, Select, SearchStyleIcon } from './styled'
-import { useDispatch, useSelector } from 'react-redux';
-import { filterProduct } from '../../features/products/productSlice'
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { getByName, getByCategory } from '../../features/products/productSlice'
+import { Container, Input, Select, SearchStyleIcon, AlertMessage } from './styled'
 
-export function FinderBar() {
-  const [selectOption, setSelectOption] = useState('');
+export function FinderBar(props) {
+  const [inputCategory, setInputCategory] = useState('');
   const [inputSearch, setInputSearch] = useState('');
-  const [message, setMessage] = useState('');
+  const [alertMessage, setAlertMessage] = useState('');
   const dispatch = useDispatch();
-  const { filters } = useSelector(state => state.products);
 
-  const validateSearchResults = (category, value) => {
-    if(value.length > 1){
-      setMessage(`Find some result for "${value}"... by "${!category ? "All" : category}"`);
-
+  const showMessage = () => {
+    if(inputSearch.length > 1){
+      setAlertMessage(`Find some result for "${inputSearch}"... by "${!inputCategory ? "All" : inputCategory}"`);
     } 
   }
 
-  const handleSearchProduct = () => {
-    validateSearchResults(selectOption, inputSearch);
-    dispatch(filterProduct({
-      category: selectOption,
-      name: inputSearch
-    }));
+  const handleSearchByName = () => {
+    if(!inputSearch || inputSearch.length < 1) return;
+    showMessage();
+    dispatch(getByName({ name: inputSearch, category: inputCategory }));
   }
+
+  const handleResetSearch = () => {
+    setInputSearch('');
+    handleSetByCategory(inputCategory);
+  }
+  
+  const handleSetByCategory = (category) => {
+    setInputCategory(category);
+    setAlertMessage('');
+    dispatch(getByCategory({ category })); 
+  }
+
+  useEffect(() => {
+    setInputCategory("all");
+  }, [])
 
   return (
     <>
-    <Container>
-      <div>
-        <Select 
-          name="category" 
-          onFocus={(ev) => setSelectOption(ev.target.value)}
-          onChange={(ev) => setSelectOption(ev.target.value)}
-          autoFocus={true}
-        >
-          <option value="">All</option>
-          <option value="unisex">Unisex</option>
-          <option value="ladies">Ladies</option>
-          <option value="gentlemen">Gentlemen</option>
-        </Select>
-      </div>
-      <div>
-        <SearchStyleIcon cursor="pointer" onClick={handleSearchProduct}/>
-        <Input 
-          type="text" 
-          name="searchProduct"
-          value={inputSearch} 
-          onChange={(ev) => setInputSearch(ev.target.value)}
-          placeholder="Search for your product here.."
-          autoComplete="off"
-        />
-      </div>
-    </Container>
-      { message && filters.length > 0 ? <p>{message} | <strong>{filters.length}</strong></p> : "" }
+      <Container margin={props.margin}>
+        <div>
+          <Select 
+            name="category" 
+            onChange={(ev) => handleSetByCategory(ev.target.value)}
+            autoFocus={true}
+          >
+            <option value="all">All</option>
+            <option value="unisex">Unisex</option>
+            <option value="ladies">Ladies</option>
+            <option value="gentlemen">Gentlemen</option>
+          </Select>
+        </div>
+        <div>
+          <SearchStyleIcon cursor="pointer" onClick={handleSearchByName}/>
+          <Input 
+            type="text" 
+            name="searchProduct"
+            value={inputSearch} 
+            onChange={(ev) => setInputSearch(ev.target.value)}
+            onKeyDown={(ev)=> ev.keyCode === 13 && handleSearchByName()}
+            placeholder="Search for your product here.."
+            autoComplete="off"
+          />
+        </div>
+      </Container>
+      { alertMessage ? <AlertMessage>{alertMessage} <button className="button-reset" onClick={handleResetSearch}>RESET SEARCH</button></AlertMessage> : "" }
     </>
   );
 }

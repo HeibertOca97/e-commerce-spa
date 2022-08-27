@@ -1,11 +1,15 @@
+import React, { Suspense, lazy } from 'react';
 import { FinderBar } from '../components/FinderBar';
-import {ProductCard} from '../features/components/ProductCard/ProductCard'
+import { NoResource } from '../components/NoResource';
 
 function Home(){ 
+    const ProductCard = lazy(() => import('../features/components/ProductCard/ProductCard'));
 
     return (<>
-        <FinderBar />
-        <ProductCard />
+        <FinderBar margin="30px auto 40px auto"/>
+        <Suspense fallback={<NoResource message="...LOADING" />}>
+            <ProductCard/>
+        </Suspense>
     </>);
 }
 

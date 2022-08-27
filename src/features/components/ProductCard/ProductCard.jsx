@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
-import { filterProduct } from '../../../features/products/productSlice'
+import { getByCategory } from '../../../features/products/productSlice'
 import { NoResource } from '../../../components/NoResource'
 import { ContainerStyled } from '../../../styledComponent';
 import { Card, SearchIconStyled } from './styled';
 
-export function ProductCard(){
+export default function ProductCard(){
     const { products, status, filters } = useSelector(state => state.products);
     const [success, setSuccess] = useState(false);
     const navigate = useNavigate();
@@ -14,19 +14,20 @@ export function ProductCard(){
 
     useEffect(() => { 
         setSuccess(status);
-        dispatch(filterProduct({
-            category: "",
-            name: ""
+    }, [status]);
+    
+    useEffect(() => { 
+        dispatch(getByCategory({
+            category: "all",
         })); 
-    }, [status, dispatch]);
-
+    }, [dispatch]);
     const goPageDetail = (id) => {
         navigate(`view/detail=${id}`);
     }
 
     const layoutProduct = () => {
         if (!success){
-            return <NoResource message="Resource not found"></NoResource>
+            return <NoResource message="RESOURCE NOT FOUND" />
         }
 
         return filters.length < 1 ? products.map((product, index) => (

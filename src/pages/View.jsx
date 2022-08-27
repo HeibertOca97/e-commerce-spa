@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { addProductToCart } from '../features/carts/cartSlice';
 import { getById } from '../features/products/productSlice';
@@ -22,7 +22,7 @@ function View(){
 
     return (<>
         {
-            id ? <p>Param has a ID number: {id}</p> : <p>Param not found</p>
+            id ? <p>Param has a ID number: {product.title}</p> : <p>Param not found</p>
         }
         <button 
             onClick={() => setQty((prevState) => prevState + 1)}

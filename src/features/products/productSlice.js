@@ -20,16 +20,32 @@ const productSlice = createSlice({
         addProduct: (state, { payload }) => {
             state.products.push(payload.product);
         },
-        filterProduct: (state, { payload }) => {
-            const {category, name} = payload;
+        getByCategory: (state, {payload}) => {
+            state.status = true;
+            state.filters = state.products.filter(item => item.categories.find(data => data === payload.category));
+        },
+        getByName: (state, { payload }) => {
+            if(payload.category !== "all" || !payload.category){
+                let getProducts = state.filters.filter(item => item.title.toLocaleLowerCase().slice(0, payload.name.length) === payload.name.toLocaleLowerCase() && item.categories.find(data => data === payload.category));
+                state.filters = getProducts;
 
-            if(!name && !category){
-                state.filters = state.products.filter(res => res.categories.find(cat => cat === category));
+                if(getProducts.length > 0){
+                    state.status = true;
+                    return;
+                }
+                state.status = false;
                 return;
             }
 
-            state.filters = state.products.filter(res => res.title.toLocaleLowerCase().slice(0, name.length) === name.toLocaleLowerCase() && res.categories.find(cat => cat === category));
-            
+            let getProducts = state.products.filter(item => item.title.toLocaleLowerCase().slice(0, payload.name.length) === payload.name.toLocaleLowerCase())
+            state.filters = getProducts;
+
+            if(getProducts.length > 0){
+                state.status = true;
+                return;
+            }
+            state.status = false;
+
         },
         getById: (state, { payload }) =>{
             let getWantedData = state.products.find(item => item.id === payload.id);
@@ -38,5 +54,5 @@ const productSlice = createSlice({
     }, 
 });
 
-export const { addProduct, filterProduct, getById } = productSlice.actions;
+export const { addProduct, getByCategory, getByName, getById } = productSlice.actions;
 export default productSlice.reducer;
