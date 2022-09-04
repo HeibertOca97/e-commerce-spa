@@ -6,9 +6,15 @@ const GlobalStyle = createGlobalStyle`
         padding: 0;
         box-sizing: border-box;
     }
+    :root {
+        --size: 1.1em;
+        --color-1: #1B366A;
+        --color-2:#FFF441; 
+    }
 
     body{
-        font-size: 1.1em;
+        font-size: var(--size);
+        font-family: 'Roboto', sans-serif;
     }
 `;
 
@@ -48,9 +54,45 @@ const ModalStyled = styled.div`
     transition: all 250ms ease-in; 
 `;
 
+const CardItem = styled.div`
+    box-shadow: 0px 5px 10px #ddd;
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    margin: 5px 0;
+
+    picture{
+        display: block;
+        width: 100%;
+        height: 150px;
+        
+        img{
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+    
+    &>div{
+        display: grid;
+        grid-template-columns: 1fr auto;
+        h4{
+            font-size: 1.3rem;
+            padding: 10px 5px;
+        }
+        p{
+            color: #aaa;
+            margin: 5px;
+        }
+    }
+    &:nth-last-child(1){
+        margin-bottom: 107px;
+    }
+`;
 
 export {
     GlobalStyle,
     ContainerStyled,
     ModalStyled,
+    CardItem,
 }

@@ -2,9 +2,9 @@ import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState, useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { removeProductFromCart } from '../../carts/cartSlice';
-import { ModalStyled } from '../../../styledComponent';
-import { ContainerBar, CardHeader, CardBody, CardItem, CardAction, CloseIconStyled, DeleteIconStyled, ButtonGoCart } from './styled';
-import { AppContext } from '../../../app/modalState';
+import { ModalStyled, CardItem } from '../../../styledComponent';
+import { ContainerBar, CardHeader, CardBody, CardAction, CloseIconStyled, DeleteIconStyled, ButtonGoCart } from './styled';
+import { AppContext } from '../../../app/MyProvider';
 
 const URL_PATH = "/e-commerce-spa";
 

@@ -1,6 +1,7 @@
+import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { NavBar } from '../components/NavBar';
-import MyProvider from '../app/modalState';
+import MyProvider from '../app/MyProvider';
 
 function Site(){
     return (

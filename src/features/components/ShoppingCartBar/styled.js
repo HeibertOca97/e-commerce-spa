@@ -35,41 +35,6 @@ const CardBody = styled.div`
     padding: 10px;
 `;
 
-const CardItem = styled.div`
-    box-shadow: 0px 5px 10px #ddd;
-    display: grid;
-    grid-template-columns: 150px 1fr;
-    margin: 5px 0;
-
-    picture{
-        display: block;
-        width: 100%;
-        height: 150px;
-        
-        img{
-            display: block;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-    }
-    
-    &>div{
-        display: grid;
-        grid-template-columns: 1fr auto;
-        h4{
-            font-size: 1.3rem;
-            padding: 10px 5px;
-        }
-        p{
-            color: #aaa;
-            margin: 5px;
-        }
-    }
-    &:nth-last-child(1){
-        margin-bottom: 107px;
-    }
-`;
 
 const CardAction = styled.div`
     position: absolute;
@@ -82,20 +47,7 @@ const CardAction = styled.div`
     grid-template-columns: 150px 1fr;
     line-height: 2.2em;
     padding: 0 10px 0 0;
-
-    //button{
-        //text-transform: uppercase;
-        //font-weight: bold;
-        //cursor: pointer;
-        //border: none;
-        //color: #fff;
-        //background-color: #011F5D;
-        //transition: all 250ms linear;
-        //&:hover{
-            //background-color: #fff;
-            //color: #000;
-        //}
-    //}
+ 
     p{
         text-transform: uppercase;
         color: #fff;
@@ -138,7 +90,6 @@ export {
     ContainerBar,
     CardHeader,
     CardBody,
-    CardItem,
     CardAction,
     CloseIconStyled,
     DeleteIconStyled,

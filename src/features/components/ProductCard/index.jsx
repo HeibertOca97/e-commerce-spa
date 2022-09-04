@@ -21,6 +21,7 @@ export default function ProductCard(){
             category: "all",
         })); 
     }, [dispatch]);
+
     const goPageDetail = (id) => {
         navigate(`view/detail=${id}`);
     }

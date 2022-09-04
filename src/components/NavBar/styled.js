@@ -22,8 +22,8 @@ const PersonOutlineIconStyled = styled(AiOutlineUser)`${IconStyled}`;
 const PictureLink = styled(Link)`${imageStyled}`
 
 const Header = styled.header`
-    background-color: ${props => props.primary ? '#fff' : '#1B366A'};
-    color: ${props => props.primary ? '#1B366A' : '#fff'};
+    background-color: ${props => props.primary ? '#fff' : 'var(--color-1)'};
+    color: ${props => props.primary ? 'var(--color-1)' : '#fff'};
   `;
 
 const HeaderSection = styled.div`
@@ -46,7 +46,7 @@ const ButtonIcon = styled.div`
     transition: all 350ms linear;
 
     &:hover{
-      color: #FFF441;
+      color: var(--color-2);
 
       span{
         color: #000;
@@ -58,7 +58,7 @@ const ButtonIcon = styled.div`
         top: 0;
         right: -10px;
         background-color: #FFDC27;
-        font-weight: 800;
+        font-weight: bold;
         padding: 2px 8px;
         border-radius: 50%; 
         font-size: .9rem;
