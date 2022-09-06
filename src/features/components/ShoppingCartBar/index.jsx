@@ -36,7 +36,7 @@ export function ShoppingCartBar(){
 
   const redirect = () => {
     setState({shoppingCart: !state.shoppingCart});
-    navigate(`${URL_PATH}/check-cart`);
+    navigate(`${URL_PATH}/view-cart`);
   }
 
   return (
@@ -57,7 +57,7 @@ export function ShoppingCartBar(){
                 <div>
                   <div>
                     <h4>{ product.title }</h4>
-                    <p><strong>${ product.price } x {product.quantity} = ${product.price * product.quantity}</strong></p>
+                    <p><span>${ product.price } x {product.quantity} = ${(product.price * product.quantity).toFixed(2)}</span></p>
                   </div>
                   <DeleteIconStyled cursor="pointer" onClick={ () => removeProduct(product.id) } />
                 </div>
@@ -67,8 +67,8 @@ export function ShoppingCartBar(){
         </CardBody>
 
         <CardAction>
-          <ButtonGoCart onClick={redirect}>Go checking</ButtonGoCart>
-          <p>Total ${cart.total.toFixed(2)}</p>
+          <ButtonGoCart onClick={redirect}>view cart</ButtonGoCart>
+          <p>SubTotal ${cart.total.toFixed(2)}</p>
         </CardAction> 
       </ContainerBar>
     </>

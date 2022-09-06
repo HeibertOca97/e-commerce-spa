@@ -80,7 +80,7 @@ const iconStyle2 = `
     padding: 10px;
     margin: 5px;
     border-radius: 50%;
-box-shadow: 0px 2px 10px #ccc;
+    box-shadow: 0px 2px 10px #ccc;
 `;
 
 const CloseIconStyled = styled(IoMdClose)`${iconStyle}`;

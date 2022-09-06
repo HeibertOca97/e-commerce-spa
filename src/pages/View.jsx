@@ -12,9 +12,11 @@ import {FlashMessage} from '../components/FlashMessage';
 
 
 const Container = styled(ContainerStyled)`
+    margin-top: 50px;
+    margin-bottom: 50px;
     @media screen and (min-width: 768px) {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         justify-content: center;
     }
 `;
@@ -24,6 +26,8 @@ const SectionProductStyled = styled.section`
     margin: 25px auto;
 
     picture{
+        position: sticky; 
+        top: 0;
         display: block;
         max-width: 550px;
         margin: auto;
@@ -36,31 +40,14 @@ const SectionProductStyled = styled.section`
 
     @media screen and (min-width: 768px) {
         width: 50%;
+        height: 100vh;
         margin: 0; 
     }
 `;
 
 const SectionDetailStyled = styled.section`
     width: 95%;
-    margin: 25px auto;
-    
-    h3{
-        font-size: calc(var(--size) + 0.6em);
-    }
-    
-    p{
-        margin: 10px 0;
-    }
-
-    &>div{
-        margin: 25px auto;
-        
-        &>.text-price{
-            font-size: calc(var(--size) + 1.5em);
-            font-weight: bold;
-            //color: var(--color-1);
-        }
-    }  
+    margin: 25px auto;  
 
     .section--product-buttons{ 
         &>div>span{
@@ -78,7 +65,7 @@ const SectionDetailStyled = styled.section`
         }
         
         @media screen and (min-width: 768px) {
-            margin: 15px auto;
+            margin: 0px auto;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -94,22 +81,34 @@ const SectionDetailStyled = styled.section`
     .section--product-exchange{ 
         details>summary{
             padding: 10px 0;
-            color: var(--color-1);
+            color: var(--color-3);
             font-weight: bold;
             cursor: pointer;
+            text-transform: uppercase;
+            font-size: calc(var(--size) - .2em);
         }
     }
 
     @media screen and (min-width: 768px) {
         width: 50%;
-        margin: 0;
-        h3{
-            font-size: calc(var(--size) + 0.8em);
-        }
-        &>div{
-            margin: 25px auto;
-            width: 95%;
-        } 
+        margin: 0; 
+    }
+`;
+
+const BoxGroup = styled.div`
+    margin: 25px auto;
+    p{
+        margin: 5px 0;
+    }      
+
+    &>.text-price{
+        font-size: calc(var(--size) + 1.5em);
+        font-weight: bold;
+    }
+
+    @media screen and (min-width: 768px) {
+        margin: 25px auto;
+        width: 95%;
     }
 `;
 
@@ -151,7 +150,7 @@ const TagStyled = styled.span`
     font-weight: bold;
     text-transform: uppercase;
     margin-right: 5px;
-    font-size calc(var(--size) - .4em);
+    font-size calc(var(--size) - .2em);
     
     @media screen and (min-width: 768px) {
         font-size calc(var(--size) - .3em);
@@ -161,13 +160,29 @@ const TagStyled = styled.span`
 
 const LabelStyled = styled.label`
     display: block;
-    background-color: ${(props) => props.color ? props.color : 'transparent'};
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin: 0 5px;
-    border: 5px solid #ccc;
     cursor: pointer;
+    
+    ${(props) => {
+        if(props.color){
+        return `
+            background-color: ${props.color ? props.color : 'transparent'};
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin: 0 5px;
+            border: 5px solid #ccc;
+        `;
+        }
+        return `
+            margin: 5px;
+            border-radius: 5px;
+            padding: 5px 8px;
+            border: 5px solid #ccc;
+            background-color: #ccc;
+
+        `;
+    }}
+    
     &:hover{
         border: 5px solid #5e77a5;
     } 
@@ -191,18 +206,36 @@ const BoxFlex = styled.p`
     }}
 `;
 
+const TitleStyled = styled.h3`
+    font-size: calc(var(--size) + .6em);
+    margin: 5px 0 15px 0; 
+    @media screen and (min-width: 768px) {
+            font-size: calc(var(--size) + 0.8em);
+    }
+`;
+
+const SubtitleStyled = styled.h5`
+    font-size: calc(var(--size) - .2em);
+    color: var(--color-3);
+    margin: 15px 0px 10px 0px;
+    text-transform: uppercase;
+`;
+
 export default function View(){ 
     const product = useSelector(state => state.products.getFinded);
     const dispatch = useDispatch();
     const { id } = useParams();
     const [qty, setQty] = useState(1);
     const [alertElement, setAlertElement] = useState('');
+    const [color, setColor] = useState('');
+    const [size, setSize] = useState('');
 
     const addCartToProduct = () => {
         let createdAt = new Date().getTime();
-        let newProduct = {...product, quantity: qty, createdAt};
+        let newProduct = {...product, color, size, quantity: qty, createdAt};
         dispatch(addProductToCart(newProduct));
         createAlert("You have added a new product");
+        setQty(1);
     }
 
     const createAlert = (message) => {
@@ -217,18 +250,55 @@ export default function View(){
 
         }
     };
-
-    const showColors = () => {
+    
+    const showSize = () => {
         try{
-            return (product.color.map((item, index) => (<span key={index}><input id={`color${index}`} type="radio" name="colors" /><LabelStyled htmlFor={`color${index}`} color={item}> 
-            </LabelStyled></span>)));
+            return (product.size.map((item, index) => (
+                <span key={index}>
+                    <input 
+                        onChange={(ev) => setSize(ev.target.value)} 
+                        id={`size${index}`} 
+                        type="radio" 
+                        name="sizes" 
+                        value={item}
+                        checked={ size === item ? true : ''  }
+                    />
+                    <LabelStyled htmlFor={`size${index}`} > {item} </LabelStyled>
+                </span>
+            )));
         }catch(err){
 
         }
     };
 
+    const showColors = () => {
+        try{
+            return (product.color.map((item, index) => (
+                <span key={index}>
+                    <input 
+                        onChange={(ev) => setColor(ev.target.value)} 
+                        id={`color${index}`} 
+                        type="radio" 
+                        name="colors" 
+                        value={item}
+                        checked={ color === item ? true : ''  }
+                    />
+                    <LabelStyled htmlFor={`color${index}`} color={item}> </LabelStyled>
+                </span>
+            )));
+        }catch(err){
+
+        }
+    }; 
+
     useEffect(() => {
         dispatch(getById({ id }));
+        try {
+            setColor(product.color[0]);
+            setSize(product.size[0]);
+        }catch(err){
+        }
+
     }, [id, product, dispatch]);
 
     return (<>
@@ -238,39 +308,55 @@ export default function View(){
             <picture><img src={product.image} alt={product.title} /></picture>
         </SectionProductStyled>
         <SectionDetailStyled>
-            <div>
+            <BoxGroup>
                 <BoxFlex>{ showCategories() }</BoxFlex>
-                <h3>{product.title}</h3>
-                <p dangerouslySetInnerHTML={{__html: product.description}} />
-                <p className="text-price">${product.price}</p>
+                <TitleStyled>{product.title}</TitleStyled>
+                <div dangerouslySetInnerHTML={{__html: product.description}} />
+            </BoxGroup>
+            <BoxGroup>
+                <SubtitleStyled>Size: {size}</SubtitleStyled>
+                <BoxFlex isset>{ showSize() }</BoxFlex>
+            </BoxGroup>
+            <BoxGroup>
+                <SubtitleStyled>Color: {color}</SubtitleStyled>
                 <BoxFlex isset>{ showColors() }</BoxFlex>
-            </div>
-            <div className="section--product-buttons">
-                <div> 
+            </BoxGroup>
+            <BoxGroup>
+                <SubtitleStyled>Price:</SubtitleStyled>
+                <p className="text-price">${product.price}</p>
+            </BoxGroup>
+            <BoxGroup >
+                <SubtitleStyled>Quantity:</SubtitleStyled>
+                <div className="section--product-buttons">
+                    <div> 
+                        <ButtonStyled
+                            onClick={() => setQty((prevState) => prevState + 1)}
+                        >
+                            <AiOutlinePlus/>
+                        </ButtonStyled>
+                        <span>{qty}</span>
+                        <ButtonStyled
+                            onClick={() => qty > 1 && setQty((prevState) => prevState - 1)}
+                        >
+                            <AiOutlineMinus />
+                        </ButtonStyled>
+                    </div>
                     <ButtonStyled
-                        onClick={() => setQty((prevState) => prevState + 1)}
-                    >
-                        <AiOutlinePlus/>
-                    </ButtonStyled>
-                    <span>{qty}</span>
-                    <ButtonStyled
-                        onClick={() => qty > 1 && setQty((prevState) => prevState - 1)}
-                    >
-                        <AiOutlineMinus />
+                        hover
+                        onClick={()=> addCartToProduct()}
+                    > 
+                        <MdOutlineAddShoppingCart /> <span>Add to cart</span>
                     </ButtonStyled>
                 </div>
-                <ButtonStyled
-                    hover
-                    onClick={()=> addCartToProduct()}
-                > <MdOutlineAddShoppingCart /> <span>Add to cart</span></ButtonStyled>
-            </div>
-            <div className="section--product-exchange">
+                
+            </BoxGroup>
+            <BoxGroup className="section--product-exchange">
                 <details>
                     <summary><BsCurrencyExchange/> Returns and exchange</summary>
                     <p>
                         All products from the moment of purchase, the dispatch of your product can take up to 2 months depending on the size of the waiting list, however we expect that on average it will take us less than 1 month to dispatch your product. You will receive an email when your product is shipped.</p>
                 </details>
-            </div>
+            </BoxGroup>
         </SectionDetailStyled>
     </ Container></>);
 }

@@ -46,24 +46,33 @@ const ButtonIcon = styled.div`
     transition: all 350ms linear;
 
     &:hover{
-      color: var(--color-2);
-
-      span{
-        color: #000;
-      }
+      color: var(--color-2); 
     }
 
-    & > span {
+    div{
         position: absolute;
         top: 0;
         right: -10px;
         background-color: #FFDC27;
-        font-weight: bold;
-        padding: 2px 8px;
-        border-radius: 50%; 
-        font-size: .9rem;
-        color: #000;
+        width: 20px;
+        height: 20px;
+        overflow: hidden;
+        border-radius: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        span {
+            display: block; 
+            color: #000;
+            font-size: calc(var(--size) - .5em);
+            font-weight: bold;
+            text-align: center;
+        }
     }
+
+    
 `;
 
 export {

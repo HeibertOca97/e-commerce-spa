@@ -34,7 +34,7 @@ export function NavBar(){
           </HeaderSection>
           <HeaderSection direction="right">
             <ButtonIcon onClick={() => setState({ shoppingCart:  !state.shoppingCart})}>
-              { cart.quantity > 0 && <span>{cart.quantity}</span>}
+              { cart.quantity > 0 && <div><span>{cart.quantity}</span></div>}
               <ShoppingBasketIconStyled/>
             </ButtonIcon>
             <ButtonIcon>

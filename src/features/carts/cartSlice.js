@@ -25,6 +25,8 @@ const cartSlice = createSlice({
                 state.quantity += payload.quantity;
                 state.total += parseFloat((payload.quantity * payload.price).toFixed(2));
                 getWantedData.quantity += payload.quantity;
+                getWantedData.color = payload.color;
+                getWantedData.size = payload.size;
                 let getNewDataFilters = state.carts.filter(item => item.id !== payload.id); 
                 state.carts = [...getNewDataFilters, getWantedData];
             }else{

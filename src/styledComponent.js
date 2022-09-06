@@ -8,13 +8,16 @@ const GlobalStyle = createGlobalStyle`
     }
     :root {
         --size: 1.1em;
-        --color-1: #1B366A;
+        --color-1:#1B366A;
         --color-2:#FFF441; 
+        --color-3:#3A6591;
     }
 
     body{
+        color: #1E1B1B;
         font-size: var(--size);
         font-family: 'Roboto', sans-serif;
+        scroll-behavior: smooth;
     }
 `;
 
@@ -81,7 +84,6 @@ const CardItem = styled.div`
             padding: 10px 5px;
         }
         p{
-            color: #aaa;
             margin: 5px;
         }
     }

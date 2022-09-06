@@ -20,7 +20,7 @@ function App() {
                 <Route path={`${URL_PATH}`} element={<Site />} >
                     <Route index element={<Home />} />
                     <Route path={`${URL_PATH}/view/detail=:id`} element={<View />} />
-                    <Route path={`${URL_PATH}/check-cart`} element={<CheckCart />} />
+                    <Route path={`${URL_PATH}/view-cart`} element={<CheckCart />} />
                     {`<Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />`}
                     <Route path="*" element={<NotFound />} />
