@@ -81,6 +81,10 @@ const iconStyle2 = `
     margin: 5px;
     border-radius: 50%;
     box-shadow: 0px 2px 10px #ccc;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    background-color: #fff;
 `;
 
 const CloseIconStyled = styled(IoMdClose)`${iconStyle}`;

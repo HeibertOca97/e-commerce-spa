@@ -13,10 +13,11 @@ import {
 import { ContainerStyled } from '../../styledComponent';
 import {ShoppingCartBar} from '../../features/components/ShoppingCartBar/index';
 import { AppContext } from '../../app/MyProvider';
+import { useRedirect } from '../../assets/helpers/redirect.hook';
 
-const URL_PATH = "/e-commerce-spa";
 
 export function NavBar(){
+  const { URL_PATH } = useRedirect();
   const cart = useSelector(state => state.cart);
   const [state, setState] = useContext(AppContext);
   

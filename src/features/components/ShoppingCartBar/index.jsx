@@ -1,17 +1,15 @@
-import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState, useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { removeProductFromCart } from '../../carts/cartSlice';
 import { ModalStyled, CardItem } from '../../../styledComponent';
 import { ContainerBar, CardHeader, CardBody, CardAction, CloseIconStyled, DeleteIconStyled, ButtonGoCart } from './styled';
 import { AppContext } from '../../../app/MyProvider';
-
-const URL_PATH = "/e-commerce-spa";
+import { useRedirect } from '../../../assets/helpers/redirect.hook.js';
 
 export function ShoppingCartBar(){ 
   const cart = useSelector(state => state.cart);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const { redirectTo } = useRedirect();
   const [state, setState] = useContext(AppContext);
 
   const [headerHeight, setHeaderHeight] = useState(0);
@@ -34,11 +32,6 @@ export function ShoppingCartBar(){
     dispatch(removeProductFromCart({ id }));
   }
 
-  const redirect = () => {
-    setState({shoppingCart: !state.shoppingCart});
-    navigate(`${URL_PATH}/view-cart`);
-  }
-
   return (
     <>
       <ModalStyled zindex={state.shoppingCart && 50} status={state.shoppingCart}/>
@@ -50,13 +43,13 @@ export function ShoppingCartBar(){
           {
             cart.carts.map((product, index) => (
               <CardItem key={index}>
-                <picture><img 
+                <picture className="card__picture"><img 
                   src={product.image}
                   alt={product.title} 
                 /></picture>
-                <div>
-                  <div>
+                <div className="card__body">
                     <h4>{ product.title }</h4>
+                  <div>
                     <p><span>${ product.price } x {product.quantity} = ${(product.price * product.quantity).toFixed(2)}</span></p>
                   </div>
                   <DeleteIconStyled cursor="pointer" onClick={ () => removeProduct(product.id) } />
@@ -67,8 +60,11 @@ export function ShoppingCartBar(){
         </CardBody>
 
         <CardAction>
-          <ButtonGoCart onClick={redirect}>view cart</ButtonGoCart>
-          <p>SubTotal ${cart.total.toFixed(2)}</p>
+          <ButtonGoCart onClick={() => {
+            setState({shoppingCart: !state.shoppingCart});
+            redirectTo('view-cart');
+          }}>view cart</ButtonGoCart>
+          <p>SubTotal ${cart.subtotal.toFixed(2)}</p>
         </CardAction> 
       </ContainerBar>
     </>

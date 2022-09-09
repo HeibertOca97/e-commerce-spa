@@ -60,10 +60,16 @@ const ModalStyled = styled.div`
 const CardItem = styled.div`
     box-shadow: 0px 5px 10px #ddd;
     display: grid;
-    grid-template-columns: 150px 1fr;
+    grid-template-columns: 120px 1fr;
     margin: 5px 0;
+    position: relative;
+    overflow: hidden;
 
-    picture{
+    @media screen and (min-width: 768px) {
+        grid-template-columns: 150px 1fr;
+    }
+
+    .card__picture{
         display: block;
         width: 100%;
         height: 150px;
@@ -76,9 +82,7 @@ const CardItem = styled.div`
         }
     }
     
-    &>div{
-        display: grid;
-        grid-template-columns: 1fr auto;
+    .card__body{ 
         h4{
             font-size: 1.3rem;
             padding: 10px 5px;
@@ -86,10 +90,45 @@ const CardItem = styled.div`
         p{
             margin: 5px;
         }
+        
     }
-    &:nth-last-child(1){
+    &:last-child{
         margin-bottom: 107px;
     }
+`;
+
+const ButtonStyled = styled.button`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 100%;
+
+    padding: 10px 5px;
+    text-align: center;
+    text-transform: uppercase;
+    
+    font-weight: bold;
+    font-size: calc(var(--size) + .1em);
+    
+    background-color: var(--color-1);
+    color: #fff;
+    border-radius: ${(props) => props.radius ? props.radius : 'none'};
+    border: 2px solid transparent;
+    transition: all 250ms linear;
+    box-shadow: 0px 8px 10px #ddd;
+    
+    ${(props) => {
+        if(props.hover){
+            return `
+            &:hover {
+                background-color: #fff;
+                border: 2px solid var(--color-1);
+                color: var(--color-1);
+            }
+            `;
+        } 
+    }}
 `;
 
 export {
@@ -97,4 +136,5 @@ export {
     ContainerStyled,
     ModalStyled,
     CardItem,
+    ButtonStyled,
 }

@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom'
 import { getByCategory } from '../../../features/products/productSlice'
 import { NoResource } from '../../../components/NoResource'
 import { ContainerStyled } from '../../../styledComponent';
 import { Card, SearchIconStyled } from './styled';
+import { useRedirect } from '../../../assets/helpers/redirect.hook';
 
 export default function ProductCard(){
     const { products, status, filters } = useSelector(state => state.products);
     const [success, setSuccess] = useState(false);
-    const navigate = useNavigate();
+    const { redirectTo } = useRedirect();
     const dispatch = useDispatch();
 
     useEffect(() => { 
@@ -21,10 +21,6 @@ export default function ProductCard(){
             category: "all",
         })); 
     }, [dispatch]);
-
-    const goPageDetail = (id) => {
-        navigate(`view/detail=${id}`);
-    }
 
     const layoutProduct = () => {
         if (!success){
@@ -43,7 +39,7 @@ export default function ProductCard(){
                 <div className="product__card-action">
                     <SearchIconStyled 
                     cursor="pointer"
-                    onClick={()=>goPageDetail(product.id)}
+                    onClick={()=>redirectTo(`view/detail=${product.id}`)}
                     />
                 </div>
             </Card>
@@ -59,7 +55,7 @@ export default function ProductCard(){
                 <div className="product__card-action">
                     <SearchIconStyled 
                     cursor="pointer"
-                    onClick={()=>goPageDetail(product.id)}
+                    onClick={()=> redirectTo(`view/detail=${product.id}`)}
                     />
                 </div>
             </Card>

@@ -3,12 +3,13 @@ import { useParams } from 'react-router-dom';
 import { addProductToCart } from '../features/carts/cartSlice';
 import { getById } from '../features/products/productSlice';
 import { useSelector, useDispatch } from 'react-redux';
-import { ContainerStyled } from '../styledComponent.js';
+import { ContainerStyled, ButtonStyled } from '../styledComponent.js';
 import styled from 'styled-components';
 import { AiOutlinePlus, AiOutlineMinus } from 'react-icons/ai';
 import { MdOutlineAddShoppingCart } from 'react-icons/md';
 import { BsCurrencyExchange } from 'react-icons/bs';
-import {FlashMessage} from '../components/FlashMessage';
+import { FlashMessage } from '../components/FlashMessage';
+import { useCounter } from '../assets/helpers/counter.hook'
 
 
 const Container = styled(ContainerStyled)`
@@ -112,38 +113,6 @@ const BoxGroup = styled.div`
     }
 `;
 
-const ButtonStyled = styled.button`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    width: 100%;
-
-    padding: 10px 0px;
-    text-align: center;
-    text-transform: uppercase;
-    
-    font-weight: bold;
-    font-size: calc(var(--size) + .1em);
-    
-    background-color: var(--color-1);
-    color: #fff;
-    border: 2px solid transparent;
-    transition: all 250ms linear;
-
-    ${(props) => {
-        if(props.hover){
-            return `
-            &:hover {
-                background-color: #fff;
-                border: 2px solid var(--color-1);
-                color: var(--color-1)
-            }
-            `;
-        }
-    }}
-`;
-
 const TagStyled = styled.span`
     display: block;
     color: var(--color-1);
@@ -225,17 +194,17 @@ export default function View(){
     const product = useSelector(state => state.products.getFinded);
     const dispatch = useDispatch();
     const { id } = useParams();
-    const [qty, setQty] = useState(1);
+    const { increment, decrement, reset, count } = useCounter();
     const [alertElement, setAlertElement] = useState('');
     const [color, setColor] = useState('');
     const [size, setSize] = useState('');
 
     const addCartToProduct = () => {
         let createdAt = new Date().getTime();
-        let newProduct = {...product, color, size, quantity: qty, createdAt};
+        let newProduct = {...product, color, size, quantity: count, createdAt};
         dispatch(addProductToCart(newProduct));
         createAlert("You have added a new product");
-        setQty(1);
+        reset();
     }
 
     const createAlert = (message) => {
@@ -329,20 +298,17 @@ export default function View(){
                 <SubtitleStyled>Quantity:</SubtitleStyled>
                 <div className="section--product-buttons">
                     <div> 
-                        <ButtonStyled
-                            onClick={() => setQty((prevState) => prevState + 1)}
-                        >
+                        <ButtonStyled onClick={increment}>
                             <AiOutlinePlus/>
                         </ButtonStyled>
-                        <span>{qty}</span>
-                        <ButtonStyled
-                            onClick={() => qty > 1 && setQty((prevState) => prevState - 1)}
-                        >
+                        <span>{count}</span>
+                        <ButtonStyled onClick={decrement}>
                             <AiOutlineMinus />
                         </ButtonStyled>
                     </div>
                     <ButtonStyled
                         hover
+                        radius="5px"
                         onClick={()=> addCartToProduct()}
                     > 
                         <MdOutlineAddShoppingCart /> <span>Add to cart</span>
