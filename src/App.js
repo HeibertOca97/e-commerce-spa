@@ -6,7 +6,7 @@ import {
 import Site from './pages/Site';
 import Home from './pages/Home';
 import View from './pages/View';
-import CheckCart from './pages/CheckCart';
+import CheckoutOrder from './pages/CheckoutOrder';
 import ViewCart from './pages/ViewCart';
 import NotFound from './pages/NotFound';
 import { useRedirect } from './assets/helpers/redirect.hook';
@@ -21,7 +21,7 @@ function App() {
                     <Route index element={<Home />} />
                     <Route path={`${URL_PATH}/view/detail=:id`} element={<View />} />
                     <Route path={`${URL_PATH}/view-cart`} element={<ViewCart />} />
-                    <Route path={`${URL_PATH}/checkout-cart`} element={<CheckCart />} />
+                    <Route path={`${URL_PATH}/checkout-order`} element={<CheckoutOrder />} />
                     <Route path="*" element={<NotFound />} />
                 </Route>
             </Routes>     

@@ -17,10 +17,13 @@ const Container = styled(ContainerStyled)`
       `;
     }
   }}
-  
+
+  .text__bold{
+    font-weight: bold; 
+  }
+
   .card__info-empty{
     height: 100vh;
-    border: 1px solid #ccc;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -62,7 +65,7 @@ const CartIconStyled = styled(MdOutlineShoppingCart)`
 
 const TitlePage = styled.h3`
   text-align: center;
-  margin: 10px 0 25px 0;
+  margin: 10px 0 50px 0;
   font-size: calc(var(--size) + 1em);
   text-transform: uppercase;
 `;
@@ -72,32 +75,44 @@ const TableStyled = styled.table`
   width: 100%;
   border-collapse: collapse;
 
-  tbody>tr{
-    display: flex;
+  thead{
+    display: block;
+    
+    tr, tr > th{
+      display: block;
+    }
+
+    tr > th{
+      padding: 15px;
+      text-transform: uppercase;
+      font-size: calc(var(--size) + .2em);
+    }
   }
 
-  thead,thead>tr, thead>tr th, 
-  tbody, tbody>tr td{
+  tbody{
     display: block;
-  }
-  
-  thead tr > th{
-    padding: 15px;
-    text-transform: uppercase;
-    font-size: calc(var(--size) + .2em);
-  }
-  tbody tr > td{
-    width: 50%;
-    padding: 15px 0;
-  }
-  tbody tr > td:nth-of-type(1){
-    font-weight: bold;
-  }
-  tbody tr{
-    border-bottom: 1px solid #BEBEBE;
-  }
-  tbody tr:nth-last-child(1){
-    border-bottom: none;
+    tr{
+      display: flex;
+      border-bottom: 1px solid #BEBEBE;
+      
+      &:last-child{
+        border-bottom: none;
+      }
+
+      & > td{
+        display: block;
+        width: 50%;
+        padding: 15px 0;
+
+        &:first-child{
+          color: var(--color-4);
+        }
+        
+        &:last-child{
+          color: var(--color-3);
+        }  
+      }
+    }
   }
 `;
 
@@ -129,11 +144,11 @@ const BoxInfo = styled.aside`
       margin: 15px 0;
     }
 
-    .sending__note{
+    .card__note{
+      margin: 15px 0;
       strong{
         text-transform: uppercase;
       }
-      margin: 15px 0;
     }
     
   }
@@ -202,29 +217,29 @@ export default function ViewCart(){
               </thead>
               <tbody>
                 <tr>
-                  <td>Subtotal</td>
+                  <td className="text__bold">Subtotal</td>
                   <td>${ cart.subtotal.toFixed(2) }</td>
                 </tr>
                 <tr>
-                  <td>Shipping</td>
+                  <td className="text__bold">Shipping</td>
                   <td>Free shipping for the whole country</td>
                 </tr>
                 <tr>
-                  <td>IVA</td>
+                  <td className="text__bold">IVA</td>
                   <td>${ cart.iva }</td>
                 </tr>
                 <tr>
-                  <td>Total</td>
+                  <td className="text__bold">Total</td>
                   <td>${ cart.total }</td>
                 </tr>
               </tbody> 
             </TableStyled>
             <span className="sending__progress-bar">100%</span>
-            <p className="sending__note"><strong>Your shipping is free!</strong> don't worry we'll take care of it</p>
+            <p className="card__note"><strong>Your shipping is free!</strong> don't worry we'll take care of it</p>
             <ButtonStyled 
             hover 
             radius="5px"
-            onClick={() => redirectTo('checkout-cart')}
+            onClick={() => redirectTo('checkout-order')}
             >Checkout</ButtonStyled>
           </div>
         </BoxInfo>

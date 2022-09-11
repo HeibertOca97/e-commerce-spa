@@ -8,13 +8,15 @@ const GlobalStyle = createGlobalStyle`
     }
     :root {
         --size: 1.1em;
+        --color-default: #1E1B1B;
         --color-1:#1B366A;
         --color-2:#FFF441; 
         --color-3:#3A6591;
+        --color-4: #454545;
     }
 
     body{
-        color: #1E1B1B;
+        color: var(--color-default);
         font-size: var(--size);
         font-family: 'Roboto', sans-serif;
         scroll-behavior: smooth;

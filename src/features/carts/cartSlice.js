@@ -19,14 +19,16 @@ const calculateAndGetTotal = (subtotal, iva) => {
 
 const modelName = "carts";
 
-createModel(modelName, {
+const initialStateCart = {
     carts: [],
     quantity: 0,
     subtotal: 0,
     iva: 0,
     total: 0,
     getFinded:{},
-});
+}
+
+createModel(modelName, initialStateCart);
 
 const cartSlice = createSlice({
     name: 'cart',
@@ -94,10 +96,15 @@ const cartSlice = createSlice({
                 }
             });
             updateModel(modelName, state);
+        },
+        resetShoppingCart: (state, action) => {
+            state = initialStateCart;
+            updateModel(modelName, state);
+            return state;
         }
     }
 });
 
 
-export const { addProductToCart, removeProductFromCart, updateQuantity } = cartSlice.actions;
+export const { addProductToCart, removeProductFromCart, updateQuantity, resetShoppingCart } = cartSlice.actions;
 export default cartSlice.reducer;
