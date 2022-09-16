@@ -4,6 +4,7 @@ import { resetShoppingCart } from '../features/carts/cartSlice';
 import styled from 'styled-components';
 import { ContainerStyled, ButtonStyled } from '../styledComponent';
 import { useRedirect } from '../assets/helpers/redirect.hook';
+import { BoxLoading } from '../components/BoxLoading';
 
 const Container = styled(ContainerStyled)`
   margin-top: 50px;
@@ -79,9 +80,8 @@ const TableStyled = styled.table`
   } 
 `;
 
-const BoxItem = styled.div`
-  
-
+const BoxItem = styled.div` 
+  position: relative;
   @media screen and (min-width: 768px){
     width: 65%;
   } 
@@ -90,6 +90,7 @@ const BoxItem = styled.div`
 const BoxInfo = styled.aside`
   display: display;
   font-size: calc(var(--size) - .3em);
+  position: relative;
   
   &>div{
     box-shadow: 0px 5px 10px #ddd;
@@ -224,6 +225,7 @@ export default function CheckoutOrder(){
   const cart = useSelector(state => state.cart); 
   const {redirectTo} = useRedirect();
   const [order, setOrder] = useState({}); 
+  const [load, setLoad] = useState(false);
 
   const getInputData = (ev) => {
     const data = {
@@ -286,29 +288,35 @@ export default function CheckoutOrder(){
     }
 
     if(permission && inputTerm.checked){
-      setOrder({});
-      document.querySelector("#formOrder").reset();
-      inputTerm.parentElement.style.border = "1px solid transparent";
-      inputTerm.checked = false;
-      dispatch(resetShoppingCart());
+      setLoad(true);
+      setTimeout(() => {
+        setLoad(false);
+        setOrder({});
+        document.querySelector("#formOrder").reset();
+        inputTerm.parentElement.style.border = "1px solid transparent";
+        inputTerm.checked = false;
+        dispatch(resetShoppingCart());
+        redirectTo('order-status');
+      }, 2500);
+
     }
   }
-  
-  
+
   const checkingOrder = () => {
     if(cart.carts.length < 1){
-        redirectTo('view-cart');
+      redirectTo('view-cart');
     }
   }
 
   useEffect(() => {
-       checkingOrder();
-  }, [cart, dispatch]);
-  
+    checkingOrder();
+  }, [dispatch]);
+
   return (<Container>
     <TitlePage>Checkout</TitlePage>
     <section>
       <BoxItem>
+        { load && <BoxLoading /> }
         <FormOrder action="" id="formOrder">
           <div className="card__info-1">
             <h3 className="text__title">Billing details</h3>
@@ -377,6 +385,7 @@ export default function CheckoutOrder(){
       </BoxItem>
       <BoxInfo> 
         <div>
+          { load && <BoxLoading /> }
           <TableStyled>
             <thead>
               <tr>
@@ -422,11 +431,11 @@ export default function CheckoutOrder(){
             <hr className="separate" />
             <p className="info__personal">Your personal data will be used to process your order, support your experience on this website and for other purposes described in our privacy policies.</p>
             <label className="info__term" htmlFor="term">
-            <input type="checkbox" name="term" id="term" />
+              <input type="checkbox" name="term" id="term" />
               {' '} {' '}I have read and agree to the terms and conditions of the website. <span className="info__required">*</span>
             </label>
           </div>
-          
+
           <ButtonStyled hover radius="5px" onClick={createShippingOrder}>Place your order</ButtonStyled>
         </div>
       </BoxInfo>

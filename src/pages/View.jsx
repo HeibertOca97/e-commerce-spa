@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { addProductToCart } from '../features/carts/cartSlice';
 import { getById } from '../features/products/productSlice';
@@ -10,6 +10,7 @@ import { MdOutlineAddShoppingCart } from 'react-icons/md';
 import { BsCurrencyExchange } from 'react-icons/bs';
 import { FlashMessage } from '../components/FlashMessage';
 import { useCounter } from '../assets/helpers/counter.hook'
+import { BoxLoading } from '../components/BoxLoading';
 
 
 const Container = styled(ContainerStyled)`
@@ -49,6 +50,7 @@ const SectionProductStyled = styled.section`
 const SectionDetailStyled = styled.section`
     width: 95%;
     margin: 25px auto;  
+    position: relative;
 
     .section--product-buttons{ 
         &>div>span{
@@ -198,13 +200,21 @@ export default function View(){
     const [alertElement, setAlertElement] = useState('');
     const [color, setColor] = useState('');
     const [size, setSize] = useState('');
+    const [load, setLoad] = useState(false);
+    const btnRef = useRef(null);
 
     const addCartToProduct = () => {
-        let createdAt = new Date().getTime();
-        let newProduct = {...product, color, size, quantity: count, createdAt};
-        dispatch(addProductToCart(newProduct));
-        createAlert("You have added a new product");
-        reset();
+        setLoad(true);
+        btnRef.current.setAttribute("disabled", "true");
+        setTimeout(() => {
+            setLoad(false);
+            btnRef.current.removeAttribute("disabled");
+            let createdAt = new Date().getTime();
+            let newProduct = {...product, color, size, quantity: count, createdAt};
+            dispatch(addProductToCart(newProduct));
+            createAlert("You have added a new product");
+            reset();
+        }, 2500);
     }
 
     const createAlert = (message) => {
@@ -219,7 +229,7 @@ export default function View(){
 
         }
     };
-    
+
     const showSize = () => {
         try{
             return (product.size.map((item, index) => (
@@ -268,62 +278,67 @@ export default function View(){
         }catch(err){
         }
 
+        return () => {
+            setAlertElement("");
+        }
     }, [id, product, dispatch]);
 
     return (<>
-    {alertElement}
-    <Container>
-        <SectionProductStyled>
-            <picture><img src={product.image} alt={product.title} /></picture>
-        </SectionProductStyled>
-        <SectionDetailStyled>
-            <BoxGroup>
-                <BoxFlex>{ showCategories() }</BoxFlex>
-                <TitleStyled>{product.title}</TitleStyled>
-                <div dangerouslySetInnerHTML={{__html: product.description}} />
-            </BoxGroup>
-            <BoxGroup>
-                <SubtitleStyled>Size: {size}</SubtitleStyled>
-                <BoxFlex isset>{ showSize() }</BoxFlex>
-            </BoxGroup>
-            <BoxGroup>
-                <SubtitleStyled>Color: {color}</SubtitleStyled>
-                <BoxFlex isset>{ showColors() }</BoxFlex>
-            </BoxGroup>
-            <BoxGroup>
-                <SubtitleStyled>Price:</SubtitleStyled>
-                <p className="text-price">${product.price}</p>
-            </BoxGroup>
-            <BoxGroup >
-                <SubtitleStyled>Quantity:</SubtitleStyled>
-                <div className="section--product-buttons">
-                    <div> 
-                        <ButtonStyled onClick={increment}>
-                            <AiOutlinePlus/>
-                        </ButtonStyled>
-                        <span>{count}</span>
-                        <ButtonStyled onClick={decrement}>
-                            <AiOutlineMinus />
+        {alertElement}
+        <Container>
+            <SectionProductStyled>
+                <picture><img src={product.image} alt={product.title} /></picture>
+            </SectionProductStyled>
+            <SectionDetailStyled>
+                { load && <BoxLoading /> }
+                <BoxGroup>
+                    <BoxFlex>{ showCategories() }</BoxFlex>
+                    <TitleStyled>{product.title}</TitleStyled>
+                    <div dangerouslySetInnerHTML={{__html: product.description}} />
+                </BoxGroup>
+                <BoxGroup>
+                    <SubtitleStyled>Size: {size}</SubtitleStyled>
+                    <BoxFlex isset>{ showSize() }</BoxFlex>
+                </BoxGroup>
+                <BoxGroup>
+                    <SubtitleStyled>Color: {color}</SubtitleStyled>
+                    <BoxFlex isset>{ showColors() }</BoxFlex>
+                </BoxGroup>
+                <BoxGroup>
+                    <SubtitleStyled>Price:</SubtitleStyled>
+                    <p className="text-price">${product.price}</p>
+                </BoxGroup>
+                <BoxGroup >
+                    <SubtitleStyled>Quantity:</SubtitleStyled>
+                    <div className="section--product-buttons">
+                        <div> 
+                            <ButtonStyled onClick={increment}>
+                                <AiOutlinePlus/>
+                            </ButtonStyled>
+                            <span>{count}</span>
+                            <ButtonStyled onClick={decrement}>
+                                <AiOutlineMinus />
+                            </ButtonStyled>
+                        </div>
+                        <ButtonStyled
+                            hover
+                            radius="5px"
+                            onClick={addCartToProduct}
+                            ref={btnRef}
+                        > 
+                            <MdOutlineAddShoppingCart /> <span>Add to cart</span>
                         </ButtonStyled>
                     </div>
-                    <ButtonStyled
-                        hover
-                        radius="5px"
-                        onClick={()=> addCartToProduct()}
-                    > 
-                        <MdOutlineAddShoppingCart /> <span>Add to cart</span>
-                    </ButtonStyled>
-                </div>
-                
-            </BoxGroup>
-            <BoxGroup className="section--product-exchange">
-                <details>
-                    <summary><BsCurrencyExchange/> Returns and exchange</summary>
-                    <p>
-                        All products from the moment of purchase, the dispatch of your product can take up to 2 months depending on the size of the waiting list, however we expect that on average it will take us less than 1 month to dispatch your product. You will receive an email when your product is shipped.</p>
-                </details>
-            </BoxGroup>
-        </SectionDetailStyled>
-    </ Container></>);
+
+                </BoxGroup>
+                <BoxGroup className="section--product-exchange">
+                    <details>
+                        <summary><BsCurrencyExchange/> Returns and exchange</summary>
+                        <p>
+                            All products from the moment of purchase, the dispatch of your product can take up to 2 months depending on the size of the waiting list, however we expect that on average it will take us less than 1 month to dispatch your product. You will receive an email when your product is shipped.</p>
+                    </details>
+                </BoxGroup>
+            </SectionDetailStyled>
+        </ Container></>);
 }
 

@@ -64,13 +64,10 @@ const CardCounter = styled.div`
   }
 `;
 
-export function CounterManagement({ id, price, quantity }){
+export function CounterManagement({ id, price, quantity, handleUpdateQuantityOfProduct }){
   const { count, increment, decrement } = useCounter(quantity);
   const dispatch = useDispatch();
   
-  const handleUpdateQuantity = () => {
-    dispatch(updateQuantity({ id, quantity: count }));
-  } 
 
   return (<CardCounter>
     <div className="card__flex">
@@ -84,7 +81,11 @@ export function CounterManagement({ id, price, quantity }){
         <button onClick={increment}>+</button>
         <span>{count}</span>
         <button onClick={decrement}>-</button>
-        { count > quantity || count < quantity ? <button className="btn__update" onClick={handleUpdateQuantity}>UPDATE</button> : '' }
+        { count > quantity || count < quantity ? <button className="btn__update" onClick={() => {
+    handleUpdateQuantityOfProduct(() => {
+      dispatch(updateQuantity({ id, quantity: count }));
+    });
+  }}>UPDATE</button> : '' }
       </div>
       <p>${(price * quantity).toFixed(2)}</p>
     </div>

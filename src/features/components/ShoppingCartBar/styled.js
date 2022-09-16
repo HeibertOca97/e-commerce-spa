@@ -33,6 +33,7 @@ const CardBody = styled.div`
     overflow: auto;
     height: 100%;
     padding: 10px;
+    position: relative;
 `;
 
 

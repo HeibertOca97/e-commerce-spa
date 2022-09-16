@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useState} from 'react';
+import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { ContainerStyled, CardItem, ButtonStyled } from '../styledComponent';
@@ -7,6 +8,7 @@ import { DeleteIconStyled } from '../features/components/ShoppingCartBar/styled.
 import { removeProductFromCart } from '../features/carts/cartSlice.js';
 import { MdOutlineShoppingCart } from 'react-icons/md'
 import { useRedirect } from '../assets/helpers/redirect.hook';
+import { BoxLoading } from '../components/BoxLoading';
 
 const Container = styled(ContainerStyled)`
   ${(props) => {
@@ -117,7 +119,8 @@ const TableStyled = styled.table`
 `;
 
 const BoxItem = styled.div`
- @media screen and (min-width: 768px){
+  position: relative;
+  @media screen and (min-width: 768px){
     width: 65%;
   } 
 `;
@@ -125,6 +128,7 @@ const BoxItem = styled.div`
 const BoxInfo = styled.aside`
   display: display;
   font-size: calc(var(--size) - .3em);
+  position: relative;
 
   &>div{
     box-shadow: 0px 5px 10px #ddd;
@@ -167,16 +171,35 @@ export default function ViewCart(){
   const cart = useSelector(state => state.cart); 
   const dispatch = useDispatch();
   const {redirectTo} = useRedirect(); 
+  const [load, setLoad] = useState(false);
+  const location = useLocation();
 
   const removeProduct = (id) => {
-    dispatch(removeProductFromCart({ id }));
+    setLoad(true);
+
+    setTimeout(() => {
+      setLoad(false);
+      dispatch(removeProductFromCart({ id }));
+    }, 2000);
   }
 
+  const handleUpdateQuantityOfProduct = (fn) => {
+    setLoad(true);
+
+    setTimeout(() => {
+      setLoad(false);
+      fn();
+    }, 2000);
+  };
+  
   const ShowProductAdded = () => {
+    let pathname = location.pathname.split('/').pop();
+    let titleDescription = pathname === 'order-status' ? "Your order has been processed!" : "Your cart is empty";
+
     if(cart.carts.length < 1){
       return (<Container>
         <div className="card__info-empty">
-          <h3>Your cart is empty</h3>
+          <h3>{ titleDescription }</h3>
           <CartIconStyled />
           <button 
             onClick={() => redirectTo()}
@@ -189,6 +212,7 @@ export default function ViewCart(){
       <TitlePage>Your shopping cart</TitlePage>
       <section>
         <BoxItem>
+          { load && <BoxLoading /> }
           {cart.carts.map((product, index) => (
             <CardItem key={index}>
               <picture className="card__picture"><img 
@@ -201,6 +225,7 @@ export default function ViewCart(){
                     id={product.id} 
                     price={product.price} 
                     quantity={product.quantity} 
+                    handleUpdateQuantityOfProduct={handleUpdateQuantityOfProduct}
                   />
                 <DeleteIconStyled cursor="pointer" onClick={ () => removeProduct(product.id) } />
               </div>
@@ -209,6 +234,7 @@ export default function ViewCart(){
         </BoxItem>
         <BoxInfo> 
           <div>
+          { load && <BoxLoading /> }
             <TableStyled>
               <thead>
                 <tr>

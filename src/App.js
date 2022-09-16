@@ -21,6 +21,7 @@ function App() {
                     <Route index element={<Home />} />
                     <Route path={`${URL_PATH}/view/detail=:id`} element={<View />} />
                     <Route path={`${URL_PATH}/view-cart`} element={<ViewCart />} />
+                    <Route path={`${URL_PATH}/order-status`} element={<ViewCart />} />
                     <Route path={`${URL_PATH}/checkout-order`} element={<CheckoutOrder />} />
                     <Route path="*" element={<NotFound />} />
                 </Route>
