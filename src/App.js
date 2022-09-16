@@ -1,27 +1,31 @@
-import { useEffect } from 'react';
-import {NavBar} from './components/NavBar';
+import React from 'react';
 import {
     Routes,
-    Route
+    Route,
 } from 'react-router-dom';
-import './App.css';
+import Site from './pages/Site';
 import Home from './pages/Home';
+import View from './pages/View';
+import CheckoutOrder from './pages/CheckoutOrder';
+import ViewCart from './pages/ViewCart';
+import NotFound from './pages/NotFound';
+import { useRedirect } from './assets/helpers/redirect.hook';
 
 function App() {
-    const APP_NAME = "ShopOnline";
 
-    useEffect(() => {
-        document.querySelector("title").innerText = `${APP_NAME}`;
-    }, []);
-
+    const { URL_PATH } = useRedirect();
+    
     return (
-        <>
-            <NavBar />
-
             <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path={`${URL_PATH}`} element={<Site />} >
+                    <Route index element={<Home />} />
+                    <Route path={`${URL_PATH}/view/detail=:id`} element={<View />} />
+                    <Route path={`${URL_PATH}/view-cart`} element={<ViewCart />} />
+                    <Route path={`${URL_PATH}/order-status`} element={<ViewCart />} />
+                    <Route path={`${URL_PATH}/checkout-order`} element={<CheckoutOrder />} />
+                    <Route path="*" element={<NotFound />} />
+                </Route>
             </Routes>     
-        </>
     );
 }
 
